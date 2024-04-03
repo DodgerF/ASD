@@ -1,6 +1,5 @@
 using System.Windows.Forms;
 using System.Drawing;
-using System;
 
 public class Window : Form
 {
