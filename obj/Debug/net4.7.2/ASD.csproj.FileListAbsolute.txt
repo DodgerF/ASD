@@ -1,0 +1,10 @@
+C:\ASD\bin\Debug\net4.7.2\ASD.exe.config
+C:\ASD\bin\Debug\net4.7.2\ASD.exe
+C:\ASD\bin\Debug\net4.7.2\ASD.pdb
+C:\ASD\obj\Debug\net4.7.2\ASD.csproj.AssemblyReference.cache
+C:\ASD\obj\Debug\net4.7.2\ASD.GeneratedMSBuildEditorConfig.editorconfig
+C:\ASD\obj\Debug\net4.7.2\ASD.AssemblyInfoInputs.cache
+C:\ASD\obj\Debug\net4.7.2\ASD.AssemblyInfo.cs
+C:\ASD\obj\Debug\net4.7.2\ASD.csproj.CoreCompileInputs.cache
+C:\ASD\obj\Debug\net4.7.2\ASD.exe
+C:\ASD\obj\Debug\net4.7.2\ASD.pdb
