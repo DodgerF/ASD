@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ASD\\ASD.csproj": {}
+    "c:\\ASD\\ASD.csproj": {}
   },
   "projects": {
-    "C:\\ASD\\ASD.csproj": {
+    "c:\\ASD\\ASD.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ASD\\ASD.csproj",
+        "projectUniqueName": "c:\\ASD\\ASD.csproj",
         "projectName": "ASD",
-        "projectPath": "C:\\ASD\\ASD.csproj",
+        "projectPath": "c:\\ASD\\ASD.csproj",
         "packagesPath": "C:\\Users\\pro10\\.nuget\\packages\\",
-        "outputPath": "C:\\ASD\\obj\\",
+        "outputPath": "c:\\ASD\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pro10\\AppData\\Roaming\\NuGet\\NuGet.Config",

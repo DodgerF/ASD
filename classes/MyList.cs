@@ -3,7 +3,7 @@ using System;
 
 public class MyList<T>
 {
-    private class Iterator
+    public class Iterator
     {
         private Node<T>[] _array;
         private int _index;
@@ -14,7 +14,7 @@ public class MyList<T>
             _index = index;
         }
         public T Current => _array[_index].value;
-        public int GetIndex() => _index;
+        public int GetIndex => _index;
         
         public Iterator Next()
         {
@@ -89,10 +89,7 @@ public class MyList<T>
         int tmp = _array[_freeIndex].next;
 
         _array[_freeIndex].value = val;
-        Console.WriteLine($"_array[{_freeIndex}].value = {val}");
         _array[_freeIndex].next = _beginIndex;
-        Console.WriteLine($"_array[{_freeIndex}].next = {_beginIndex}");
-        Console.WriteLine("--------------------------------------------------------");
         _beginIndex = _freeIndex;
         _freeIndex = tmp;
         _count++;
@@ -124,15 +121,11 @@ public class MyList<T>
             statistics++;
             if (i == index)
             {
-                int pastIndex = iteratorPast.GetIndex();
+                int pastIndex = iteratorPast.GetIndex;
                 int tmpIndex = _array[_freeIndex].next;     
                 _array[_freeIndex].value = val;
-                Console.WriteLine($"_array[{_freeIndex}].value = {val}");
-                _array[_freeIndex].next = iteratorCurrent.GetIndex();
-                Console.WriteLine($"_array[{_freeIndex}].next = {iteratorCurrent.GetIndex()}");
+                _array[_freeIndex].next = iteratorCurrent.GetIndex;
                 _array[pastIndex].next = _freeIndex;
-                Console.WriteLine($"_array[{pastIndex}].next = {_freeIndex}");
-                Console.WriteLine("--------------------------------------------------------");
                 _freeIndex = tmpIndex;
                 _count++;
                 return true;
@@ -157,10 +150,10 @@ public class MyList<T>
         var itEnd = End();
         for (var iteratorPast = Begin(); iteratorCurrent != itEnd; iteratorCurrent.Next(), iteratorPast.Next()) 
         {
-            currentIndex = iteratorCurrent.GetIndex();
+            currentIndex = iteratorCurrent.GetIndex;
             if (_array[currentIndex].value.Equals(val))
             {
-                int pastIndex = iteratorPast.GetIndex();
+                int pastIndex = iteratorPast.GetIndex;
                 _array[pastIndex].next = _array[currentIndex].next;
                 _array[currentIndex].next = _freeIndex;
                 _freeIndex = currentIndex;
@@ -198,8 +191,8 @@ public class MyList<T>
             statistics++;
             if (i == index)
             {
-                int pastIndex = iteratorPast.GetIndex();
-                currentIndex = iteratorCurrent.GetIndex();
+                int pastIndex = iteratorPast.GetIndex;
+                currentIndex = iteratorCurrent.GetIndex;
                 _array[pastIndex].next = _array[currentIndex].next;
                 _array[currentIndex].next = _freeIndex;
                 _freeIndex = currentIndex;
@@ -237,7 +230,7 @@ public class MyList<T>
         {
             if (i == index)
             {
-                _array[iterator.GetIndex()].value = val;
+                _array[iterator.GetIndex].value = val;
                 return true;
             }
         }
@@ -249,7 +242,7 @@ public class MyList<T>
         var end = End();
         for (var iterator = Begin(); iterator != end; iterator.Next(), i++)
         {
-            if  (_array[iterator.GetIndex()].value.Equals(value))
+            if  (_array[iterator.GetIndex].value.Equals(value))
             {
                 return i;
             }
@@ -261,7 +254,7 @@ public class MyList<T>
         var end = End();
         for(var iterator = Begin(); iterator != end; iterator.Next())
         {
-            Console.WriteLine(_array[iterator.GetIndex()].value);
+            Console.WriteLine(_array[iterator.GetIndex].value);
         }
     }
 
@@ -272,7 +265,7 @@ public class MyList<T>
         for (var iterator = Begin(); iterator != end; iterator.Next())
         {
             statistics++;
-            if (_array[iterator.GetIndex()].value.Equals(value))
+            if (_array[iterator.GetIndex].value.Equals(value))
             {
                 return true;
             }
@@ -291,8 +284,8 @@ public class MyList<T>
         _array[_array.Length - 1].next = -1;
         _lenght *= 2;
     }
-    private Iterator Begin() => new Iterator(_array, _beginIndex);
-    private Iterator End() => new Iterator(_array, -1);
+    public Iterator Begin() => new Iterator(_array, _beginIndex);
+    public Iterator End() => new Iterator(_array, -1);
     
 }
 
