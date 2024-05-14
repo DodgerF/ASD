@@ -1,12 +1,44 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Windows.Forms;
 
 public class Program
 {
     private static Window _window = new Window();
+    private static MyList<int> list;
     [STAThread]
     static void Main(string[] args)
+    {
+        int startNumber = 3;
+        list = new MyList<int>(startNumber);
+        _window.CreateDataGrid(startNumber);       
+        //ConsoleView();
+
+        Application.Run(_window);
+    }
+    public static int GetFreeIndex => list.FreeIndex;
+    public static bool IsListEmpty => list.IsEmpty;
+    public static int GetIndexByValue(int value) => list.GetIndexByValue(value);
+
+    public static bool TryAddValue(string value)
+    {
+        int val;
+        
+        if (!int.TryParse(value, out val)) return false;
+
+        if (list.Push(val)) 
+        {
+            Console.WriteLine(list.GetIndexByValue(val));
+            return true;
+        }
+
+        return false;
+    }
+    public static void ClearList()
+    {
+        list.Clear();
+    }
+
+    static void ConsoleView()
     {
         int key = -1, len = -1;
         Console.Write("Create a list. Enter the desired number of items: ");
@@ -26,14 +58,14 @@ public class Program
             switch(key)
             {
                 case(1):
-                    Console.WriteLine($"Size of list: {list.Lenght}");
+                    Console.WriteLine($"Size of list: {list.Lenght}"); 
                     break;
                 case(2):
                     if (list.IsEmpty)
                         Console.WriteLine("List is empty");
                     else
                     {
-                        list.Clear();
+                        list.Clear(); 
                         Console.WriteLine("List is cleared");
                     }
                     break;
@@ -112,24 +144,23 @@ public class Program
                     break;
             }
         }
-        //Application.Run(_window);
     }
 
     static void Menu()
     {
         Console.WriteLine(
             "*********** Operation menu ***********\n" + 
-            "1 - Request list size\n" +
-            "2 - Clear the list\n" +
-            "3 - Check list for empty\n" +
-            "4 - Request the presence of an element\n" +
-            "5 - Read value by number in list\n" +
-            "6 - Change value by number in list\n" +
-            "7 - Get element position by value\n" +
+            "1 - Request list size\n" + 
+            "2 - Clear the list\n" + 
+            "3 - Check list for empty\n" + 
+            "4 - Request the presence of an element\n" + 
+            "5 - Read value by number in list\n" + 
+            "6 - Change value by number in list\n" + //TODO:
+            "7 - Get element position by value\n" + //TODO:
             "8 - Insert value\n" +
-            "9 - Delete value\n" +
-            "10 - Request statistics\n" +
-            "11 - Show all values\n" +
+            "9 - Delete value\n" + //TODO:
+            "10 - Request statistics\n" + //TODO:
+            "11 - Show all values\n" + 
             "12 - Iterator operation\n" +
             "0 - Exit"
             );
@@ -140,9 +171,9 @@ public class Program
         while(choice != 0)
         {
             Console.WriteLine("_____Choose what you want to do:\n" +
-                              "1 - Fill the list with random values\n" +
+                              "1 - Fill the list with random values\n" + //TODO:
                               "2 - Insert new value\n" +
-                              "3 - Insert new value by number\n" +
+                              "3 - Insert new value by number\n" + //TODO:
                               "4 - Print\n" +
                               "0 - Go back");
             Console.Write("Enter number: ");
@@ -181,8 +212,8 @@ public class Program
         while(choice != 0)
         {
             Console.WriteLine("_____Choose what you want to do:\n" +
-                              "1 - Delete value\n" +
-                              "2 - Delete value by number\n" +
+                              "1 - Delete value\n" + //TODO:
+                              "2 - Delete value by number\n" + //TODO:
                               "0 - Go back");
             Console.Write("Enter number: ");
             choice = Convert.ToInt32(Console.ReadLine());
@@ -211,10 +242,10 @@ public class Program
         while(choice != 0)
         {
             Console.WriteLine("_____Choose what you want to do:\n" +
-                              "1 - Set iterator\n" +
-                              "2 - Set iterator by number\n" +
-                              "3 - Get value by iterator\n" +
-                              "4 - Move to next value\n" +
+                              "1 - Set iterator\n" + //TODO:
+                              "2 - Set iterator by number\n" + //TODO:
+                              "3 - Get value by iterator\n" + //TODO:
+                              "4 - Move to next value\n" + //TODO:
                               "5 - Show all values\n" +
                               "0 - Go back");
             Console.Write("Enter number: ");
