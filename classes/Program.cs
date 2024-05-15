@@ -4,38 +4,16 @@ using System.Windows.Forms;
 public class Program
 {
     private static Window _window = new Window();
-    private static MyList<int> list;
+    public static MyList<int> list;
     [STAThread]
     static void Main(string[] args)
     {
         int startNumber = 3;
         list = new MyList<int>(startNumber);
-        _window.CreateDataGrid(startNumber);       
+        _window.CreateDataGrid();       
         //ConsoleView();
 
         Application.Run(_window);
-    }
-    public static int GetFreeIndex => list.FreeIndex;
-    public static bool IsListEmpty => list.IsEmpty;
-    public static int GetIndexByValue(int value) => list.GetIndexByValue(value);
-
-    public static bool TryAddValue(string value)
-    {
-        int val;
-        
-        if (!int.TryParse(value, out val)) return false;
-
-        if (list.Push(val)) 
-        {
-            Console.WriteLine(list.GetIndexByValue(val));
-            return true;
-        }
-
-        return false;
-    }
-    public static void ClearList()
-    {
-        list.Clear();
     }
 
     static void ConsoleView()
@@ -155,10 +133,10 @@ public class Program
             "3 - Check list for empty\n" + 
             "4 - Request the presence of an element\n" + 
             "5 - Read value by number in list\n" + 
-            "6 - Change value by number in list\n" + //TODO:
-            "7 - Get element position by value\n" + //TODO:
+            "6 - Change value by number in list\n" +
+            "7 - Get element position by value\n" + 
             "8 - Insert value\n" +
-            "9 - Delete value\n" + //TODO:
+            "9 - Delete value\n" +
             "10 - Request statistics\n" + //TODO:
             "11 - Show all values\n" + 
             "12 - Iterator operation\n" +
@@ -173,7 +151,7 @@ public class Program
             Console.WriteLine("_____Choose what you want to do:\n" +
                               "1 - Fill the list with random values\n" + //TODO:
                               "2 - Insert new value\n" +
-                              "3 - Insert new value by number\n" + //TODO:
+                              "3 - Insert new value by number\n" + 
                               "4 - Print\n" +
                               "0 - Go back");
             Console.Write("Enter number: ");
@@ -212,8 +190,8 @@ public class Program
         while(choice != 0)
         {
             Console.WriteLine("_____Choose what you want to do:\n" +
-                              "1 - Delete value\n" + //TODO:
-                              "2 - Delete value by number\n" + //TODO:
+                              "1 - Delete value\n" + 
+                              "2 - Delete value by number\n" + 
                               "0 - Go back");
             Console.Write("Enter number: ");
             choice = Convert.ToInt32(Console.ReadLine());

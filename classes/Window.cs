@@ -2,6 +2,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class Window : Form
 {
@@ -11,23 +12,21 @@ public class Window : Form
     private Button addValueButton = new Button();
     private Button clearButton = new Button();
     private Button checkByValueButton = new Button();
-    private Button viewValueButton = new Button();
-    private Button viewIndexButton = new Button();
-    private Button iteratorViewButton = new Button();
-    private Button changeValueByNumber = new Button();
-    private List<Button> buttonsByValue;
-    private List<Button> buttonsByIndex;
-    private List<Button> buttonsForIterator;
-    private List<Button> buttonsBasic;
+    private Button changeValueByNumberButton = new Button();
+    private Button deleteValueButton = new Button();
+    private Button deleteValueByNumberButton = new Button();
+    private Button addByNumberButton = new Button();
+    private List<Button> buttons;
     private const int BUTTON_HEIGHT = 30;
-    private const int BUTTON_WIDTH = 120;
+    private const int BUTTON_WIDTH = 150;
     private const int BUTTON_OFFSET = 10;
     #endregion
 
     #region TextBox
-    private TextBox inputText = new TextBox();
-    private TextBox sizeText = new TextBox();
-    private List<TextBox> textBoxes;
+    private MyTextBox inputValueText = new MyTextBox();
+    private MyTextBox inputIndexText = new MyTextBox();
+    private MyTextBox sizeText = new MyTextBox();
+    private List<MyTextBox> textBoxes;
 
     private const int TEXTBOX_HEIGHT = 50;
     private const int TEXTBOX_WIDTH = 70;
@@ -38,6 +37,7 @@ public class Window : Form
 
     private DataGridView dataGridView = new DataGridView();
     private const float FONT_SCALE = 10;
+    private MyList<int> List => Program.list;
 
     #endregion
     public Window()
@@ -83,129 +83,115 @@ public class Window : Form
     private void InitTextBoxes()
     {
         sizeText.ReadOnly = true;
-        textBoxes  = new List<TextBox>()
+        
+        inputIndexText.SetWatermark("For Index");
+        inputValueText.SetWatermark("For Value");
+        textBoxes  = new List<MyTextBox>()
         {
-            inputText,
+            inputValueText,
+            inputIndexText,
             sizeText,
         };
         
 
         Draw(textBoxes, new Point(0, 60), TEXTBOX_WIDTH, TEXTBOX_HEIGHT, TEXTBOX_OFFSET);
     }
+
     private void InitButtons()
     {
         addValueButton.Text = "AddValue";
         addValueButton.Click += new EventHandler(OnAddValue);
 
+        addByNumberButton.Text = "AddByNumber";
+        addByNumberButton.Click += new EventHandler(OnAddByNumber);
+
         checkByValueButton.Text = "CheckByValue";
         checkByValueButton.Click += new EventHandler(OnSelectByValue);
-        buttonsByValue = new List<Button>()
-        {
-            addValueButton,
-            checkByValueButton
-        };
 
         clearButton.Text = "Clear";
         clearButton.Click += new EventHandler(OnClear);
 
-        viewValueButton.Text = "ByValue";
-        viewValueButton.Click += new EventHandler(OnViewValue);
+        changeValueByNumberButton.Text = "ChangeValByNumber";
+        changeValueByNumberButton.Click += new EventHandler(OnChangeValueByNumber);
 
-        viewIndexButton.Text = "ByIndex";
-        viewIndexButton.Click += new EventHandler(OnViewIndex);
+        deleteValueButton.Text = "DeleteValue";
+        deleteValueButton.Click += new EventHandler(OnDeleteValue);
 
-        iteratorViewButton.Text = "Iterator";
-        iteratorViewButton.Click += new EventHandler(OnViewIterator);
-        buttonsBasic = new List<Button>()
+        deleteValueByNumberButton.Text = "DeleteByNumber";
+        deleteValueByNumberButton.Click += new EventHandler(OnDeleteValueByNumber);
+        buttons = new List<Button>()
         {
-            viewValueButton,
-            viewIndexButton,
-            iteratorViewButton,
-            clearButton,
+            addValueButton,
+            addByNumberButton,
+            checkByValueButton,
+            changeValueByNumberButton,
+            deleteValueButton,
+            deleteValueByNumberButton,
+            clearButton
         };
 
-        changeValueByNumber.Text = "ChangeValueByNumber";
-        changeValueByNumber.Click += new EventHandler(OnChangeValueByNumber);
-        buttonsByIndex = new List<Button>() 
-        {
-            changeValueByNumber
-        };
-        buttonsForIterator = new List<Button>();
 
-        Draw(buttonsByValue, new Point(0, 100), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_OFFSET);
-        Draw(buttonsBasic, new Point(650, 700), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_OFFSET);
+        Draw(buttons, new Point(0, 100), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_OFFSET);
 
+    }
+
+    private void OnAddByNumber(object sender, EventArgs e)
+    {
+        int value = -1;
+        if (!TryParse(inputValueText, ref value)) return;
+
+        int index = -1;
+        if (!TryParse(inputIndexText, ref index)) return;
+
+        if(!List.Push(value, index)) return;
+
+        UpdateGrid();
+    }
+
+    private void OnDeleteValueByNumber(object sender, EventArgs e)
+    {
+        int index = -1;
+        if (!TryParse(inputIndexText, ref index)) return;
+
+        if (!List.PopByIndex(index)) return;
+
+        UpdateGrid();
+    }
+
+    private void OnDeleteValue(object sender, EventArgs e)
+    {
+        int value = -1;
+        if (!TryParse(inputValueText, ref value)) return;
+
+        if (!List.Pop(value)) return;
+
+        UpdateGrid();        
     }
 
     private void OnChangeValueByNumber(object sender, EventArgs e)
     {
-        // string text = inputText.Text;
-        // int index;
-        
-        // if (!int.TryParse(text, out index)) return;
-        // int val = Program.Get(index);
-    }
+        int value = -1;
+        if (!TryParse(inputValueText, ref value)) return;
 
-    private void OnViewIterator(object sender, EventArgs e)
-    {
-        foreach (Button button in buttonsByValue)
-        {
-            button.Visible = false;
-        }
-        foreach (Button button in buttonsByIndex)
-        {
-            button.Visible = false;
-        }
-        foreach (Button button in buttonsForIterator)
-        {
-            button.Visible = true;
-        }
-    }
+        int index = -1;
+        if (!TryParse(inputIndexText, ref index)) return;
 
-    private void OnViewIndex(object sender, EventArgs e)
-    {
-        foreach (Button button in buttonsByValue)
-        {
-            button.Visible = false;
-        }
-        foreach (Button button in buttonsByIndex)
-        {
-            button.Visible = true;
-        }
-        foreach (Button button in buttonsForIterator)
-        {
-            button.Visible = false;
-        }
-    }
+        if(!List.ChangeValue(index, value)) return;
 
-    private void OnViewValue(object sender, EventArgs e)
-    {
-        foreach (Button button in buttonsByValue)
-        {
-            button.Visible = true;
-        }
-        foreach (Button button in buttonsByIndex)
-        {
-            button.Visible = false;
-        }
-        foreach (Button button in buttonsForIterator)
-        {
-            button.Visible = false;
-        }
+        UpdateGrid();
     }
 
     private void OnSelectByValue(object sender, EventArgs e)
     {
         Unselect();
         
-        string text = inputText.Text;
-        int val;
+        int value = -1;
         
-        if (!int.TryParse(text, out val)) return;
-        int index = Program.GetIndexByValue(val);
+        if (!TryParse(inputValueText, ref value)) return;
+        int index = List.GetIndexByValue(value);
 
         if (index == -1) return;
-        Console.WriteLine(index);
+
         dataGridView.Columns[index].DefaultCellStyle.Font = new Font(dataGridView.DefaultCellStyle.Font, FontStyle.Bold);
     }
     private void Unselect()
@@ -216,35 +202,23 @@ public class Window : Form
         }
     }
 
-
-
     private void OnAddValue(object sender, EventArgs e)
     {
-        string text = inputText.Text;
-        if (!Program.TryAddValue(text)) return;
-
-        while (dataGridView.ColumnCount < Program.GetFreeIndex)
-        {
-            AddColumn();
-        }
+        string text = inputValueText.Text;
+        int val;
+        if (!int.TryParse(text, out val)) return;
+        if (!Program.list.Push(val)) return;
         
-        for (int i = dataGridView.ColumnCount - 1; i > 0; i--)
-        {
-            dataGridView[i, 0].Value = dataGridView[i - 1, 0].Value;
-        }
-        dataGridView[0, 0].Value = text;
-        CheckListForEmpty();
+        UpdateGrid();
     }
     private void OnClear(object sender, EventArgs e)
     {
-        Program.ClearList();
-        Clear();
-        UpdateSizeText();
-        CheckListForEmpty();
+        List.Clear();
+        UpdateGrid();
     }
     private void CheckListForEmpty()
     {
-        isEmptyBox.Checked = Program.IsListEmpty;
+        isEmptyBox.Checked = Program.list.IsEmpty;
     }
     private void UpdateSizeText()
     {
@@ -256,22 +230,39 @@ public class Window : Form
         dataGridView.Columns.Add("Column" + columnCount + 1, "Element" + columnCount);
         UpdateSizeText();
     }
-    private void Clear()
+    private void UpdateGrid()
     {
-        for (int i = 0; i < dataGridView.ColumnCount; i++)
-        {
-            dataGridView[i, 0].Value = "";
-        }
-
-    }
-
-    public void CreateDataGrid(int numberOfColumn)
-    {
-        Clear();
-        for (int i = 0; i < numberOfColumn; i++)
+        while (dataGridView.ColumnCount < List.Lenght)
         {
             AddColumn();
         }
+
+        var end = List.End();
+        int i = 0;
+        for(var iterator = List.Begin(); iterator != end; iterator.Next())
+        {
+            dataGridView[i, 0].Value = List.Get(iterator.GetIndex).value;
+            i++;
+        }
+        for(; i<dataGridView.ColumnCount; i++)
+        {
+            dataGridView[i, 0].Value = "";
+        }
         CheckListForEmpty();
+        inputIndexText.SetWatermark(inputIndexText.watermark);
+        inputValueText.SetWatermark(inputValueText.watermark);
+
+    }
+    private bool TryParse(MyTextBox textBox, ref int val)
+    {
+        string text = textBox.Text;
+        return int.TryParse(text, out val);
+    }
+
+    
+
+    public void CreateDataGrid()
+    {
+        UpdateGrid();
     }
 }

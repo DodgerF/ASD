@@ -112,6 +112,7 @@ public class MyList<T>
         if(_count == _lenght - 1) Resize();
 
         var iteratorCurrent = Begin();
+        Console.WriteLine(iteratorCurrent.GetIndex);
         iteratorCurrent.Next();
         var iteratorPast = Begin();
 
