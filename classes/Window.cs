@@ -16,6 +16,7 @@ public class Window : Form
     private Button deleteValueButton = new Button();
     private Button deleteValueByNumberButton = new Button();
     private Button addByNumberButton = new Button();
+    private Button fillListButton = new Button();
     private List<Button> buttons;
     private const int BUTTON_HEIGHT = 30;
     private const int BUTTON_WIDTH = 150;
@@ -26,6 +27,7 @@ public class Window : Form
     private MyTextBox inputValueText = new MyTextBox();
     private MyTextBox inputIndexText = new MyTextBox();
     private MyTextBox sizeText = new MyTextBox();
+    private MyTextBox statisticText = new MyTextBox();
     private List<MyTextBox> textBoxes;
 
     private const int TEXTBOX_HEIGHT = 50;
@@ -49,14 +51,14 @@ public class Window : Form
         InitTextBoxes();
         InitButtons();
 
-        isEmptyBox.Location = new Point(10, 150);
+        isEmptyBox.Location = new Point(10, 190);
         isEmptyBox.Text = "Is Empty";
         isEmptyBox.Enabled = false;
         isEmptyBox.Font = new Font(dataGridView.Font.FontFamily, FONT_SCALE);
         Controls.Add(isEmptyBox);
         
         dataGridView.RowTemplate.Height = 30;
-        dataGridView.Size = new Size(Width, 50);
+        dataGridView.Size = new Size(Width, 70);
         dataGridView.Font = new Font(dataGridView.Font.FontFamily, FONT_SCALE);
         Controls.Add(dataGridView);
     }
@@ -83,6 +85,7 @@ public class Window : Form
     private void InitTextBoxes()
     {
         sizeText.ReadOnly = true;
+        statisticText.ReadOnly = true;
         
         inputIndexText.SetWatermark("For Index");
         inputValueText.SetWatermark("For Value");
@@ -91,10 +94,11 @@ public class Window : Form
             inputValueText,
             inputIndexText,
             sizeText,
+            statisticText
         };
         
 
-        Draw(textBoxes, new Point(0, 60), TEXTBOX_WIDTH, TEXTBOX_HEIGHT, TEXTBOX_OFFSET);
+        Draw(textBoxes, new Point(0, 80), TEXTBOX_WIDTH, TEXTBOX_HEIGHT, TEXTBOX_OFFSET);
     }
 
     private void InitButtons()
@@ -119,6 +123,9 @@ public class Window : Form
 
         deleteValueByNumberButton.Text = "DeleteByNumber";
         deleteValueByNumberButton.Click += new EventHandler(OnDeleteValueByNumber);
+
+        fillListButton.Text = "FillRandom";
+        fillListButton.Click += new EventHandler(OnFillList);
         buttons = new List<Button>()
         {
             addValueButton,
@@ -127,12 +134,22 @@ public class Window : Form
             changeValueByNumberButton,
             deleteValueButton,
             deleteValueByNumberButton,
+            fillListButton,
             clearButton
         };
 
 
-        Draw(buttons, new Point(0, 100), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_OFFSET);
+        Draw(buttons, new Point(0, 120), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_OFFSET);
 
+    }
+
+    private void OnFillList(object sender, EventArgs e)
+    {
+        var random = new Random();
+        int len = List.Lenght - List.Count;
+        for (int i = 0; i < len; i++)
+            List.Push(random.Next());
+        UpdateGrid();
     }
 
     private void OnAddByNumber(object sender, EventArgs e)
@@ -218,11 +235,15 @@ public class Window : Form
     }
     private void CheckListForEmpty()
     {
-        isEmptyBox.Checked = Program.list.IsEmpty;
+        isEmptyBox.Checked = List.IsEmpty;
     }
     private void UpdateSizeText()
     {
-        sizeText.Text = "Size: " + dataGridView.Columns.Count;
+        sizeText.Text = "Size: " + List.Lenght;
+    }
+    private void UpdateStatisticText()
+    {
+        statisticText.Text = "Stat: " + List.statistic;
     }
     private void AddColumn()
     {
@@ -248,9 +269,11 @@ public class Window : Form
         {
             dataGridView[i, 0].Value = "";
         }
+        Unselect();
         CheckListForEmpty();
         inputIndexText.SetWatermark(inputIndexText.watermark);
         inputValueText.SetWatermark(inputValueText.watermark);
+        UpdateStatisticText();
 
     }
     private bool TryParse(MyTextBox textBox, ref int val)

@@ -36,7 +36,7 @@ public class MyList<T>
     private Node<T>[] _array;
     private int _beginIndex;
     private int _freeIndex;
-    public int statistics;
+    public int statistic;
 
     public int Lenght => _lenght;
     public int Count => _count;
@@ -100,11 +100,11 @@ public class MyList<T>
     {
         if (index < 0 || index >= _count || _lenght == 0) return false;
 
-        statistics = 0;
+        statistic = 0;
 
         if (index == 0)
         {
-            statistics++;
+            statistic++;
             Push(val);
             return true;
         }
@@ -119,7 +119,7 @@ public class MyList<T>
         var endIterator = End();
         for (int i = 1; iteratorCurrent != endIterator; iteratorCurrent.Next(), iteratorPast.Next(), i++)
         {
-            statistics++;
+            statistic++;
             if (i == index)
             {
                 int pastIndex = iteratorPast.GetIndex;
@@ -171,7 +171,7 @@ public class MyList<T>
         if (index < 0 || index >= _count || _lenght == 0) return false;
 
         int currentIndex = _beginIndex;
-        statistics = 0;
+        statistic = 0;
 
         if (index == 0)
         {
@@ -179,7 +179,7 @@ public class MyList<T>
             _array[currentIndex].next = _freeIndex;
             _freeIndex = currentIndex;
             _count--;
-            statistics++;
+            statistic++;
             return true;
         }
         
@@ -189,7 +189,7 @@ public class MyList<T>
         var itEnd = End();
         for (int i = 1; iteratorCurrent != itEnd; iteratorCurrent.Next(), iteratorPast.Next(), i++)
         {
-            statistics++;
+            statistic++;
             if (i == index)
             {
                 int pastIndex = iteratorPast.GetIndex;
@@ -261,11 +261,11 @@ public class MyList<T>
 
     public bool IsExist(T value)
     {
-        statistics = 0;
+        statistic = 0;
         var end = End();
         for (var iterator = Begin(); iterator != end; iterator.Next())
         {
-            statistics++;
+            statistic++;
             if (_array[iterator.GetIndex].value.Equals(value))
             {
                 return true;
